@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -21,16 +20,20 @@
     </div>
   </nav>
 
-  <!-- Main App -->
   <div id="app" class="container"></div>
 
-  <!-- Templates -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="/static/js/app/main.js"></script>
 
+  <script src="/static/js/app/models/task.js"></script>
+  <script src="/static/js/app/views/task-item.js"></script>
+  <script src="/static/js/app/views/task-progress.js"></script>
+  <script src="/static/js/app/views/task-list.js"></script>
+  <script src="/static/js/app/views/task-detail.js"></script>
+  <script src="/static/js/app/router.js"></script>
+  <script src="/static/js/app/main.js"></script>
 </body>
 </html>
