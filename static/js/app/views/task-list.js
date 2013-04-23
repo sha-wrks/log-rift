@@ -49,7 +49,14 @@
         if (!title) return;
         self.collection.create({ title: title }, {
           wait: true,
-          success: function () { $('#quick-title').val('').focus(); }
+          success: function () {
+            $('#quick-title').val('').focus();
+            App.Views.Notify.success('Task created!');
+          },
+          error: function (m, xhr) {
+            var msg = xhr.responseJSON ? xhr.responseJSON.error : 'Failed to create task';
+            App.Views.Notify.error(msg);
+          }
         });
       });
     },
