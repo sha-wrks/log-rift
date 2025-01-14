@@ -1,46 +1,50 @@
-var Task = Backbone.Model.extend({
-  urlRoot: '/api/tasks',
+;(function () {
 
-  defaults: {
-    title: '',
-    description: '',
-    status: 'pending',
-    priority: 0,
-    category: 'general'
-  },
+  App.Models.Task = Backbone.Model.extend({
+    urlRoot: '/api/tasks',
 
-  toggle: function () {
-    this.save({ status: this.get('status') === 'done' ? 'pending' : 'done' }, { patch: true });
-  }
-});
+    defaults: {
+      title: '',
+      description: '',
+      status: 'pending',
+      priority: 0,
+      category: 'general'
+    },
 
-var TaskList = Backbone.Collection.extend({
-  url: '/api/tasks',
-  model: Task,
+    toggle: function () {
+      this.save({ status: this.get('status') === 'done' ? 'pending' : 'done' }, { patch: true });
+    }
+  });
 
-  comparator: function (task) {
-    var priority = task.get('priority');
-    var created = new Date(task.get('created_at')).getTime();
-    return -(priority * 10000000000000 + created);
-  },
+  App.Collections.TaskList = Backbone.Collection.extend({
+    url: '/api/tasks',
+    model: App.Models.Task,
 
-  byStatus: function (status) {
-    return this.filter(function (task) {
-      return task.get('status') === status;
-    });
-  },
+    comparator: function (task) {
+      var priority = task.get('priority');
+      var created = new Date(task.get('created_at')).getTime();
+      return -(priority * 10000000000000 + created);
+    },
 
-  pending: function () {
-    return this.byStatus('pending');
-  },
+    byStatus: function (status) {
+      return this.filter(function (task) {
+        return task.get('status') === status;
+      });
+    },
 
-  done: function () {
-    return this.byStatus('done');
-  },
+    pending: function () {
+      return this.byStatus('pending');
+    },
 
-  progress: function () {
-    var total = this.length;
-    if (total === 0) return 100;
-    return Math.round((this.done().length / total) * 100);
-  }
-});
+    done: function () {
+      return this.byStatus('done');
+    },
+
+    progress: function () {
+      var total = this.length;
+      if (total === 0) return 100;
+      return Math.round((this.done().length / total) * 100);
+    }
+  });
+
+})();
