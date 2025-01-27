@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ordo_data:/app/data
+    environment:
+      - FLASK_ENV=production
+
+volumes:
+  ordo_data:

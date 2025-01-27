@@ -9,19 +9,18 @@ Keep track of your daily tasks with a clean, responsive interface. Ordo lets you
 - **Backend:** Flask (Python) + JSON file storage
 - **Frontend:** Backbone.js + Handlebars + jQuery
 - **Styling:** Bootstrap 3 + Font Awesome
-- **Deployment:** Vercel (serverless)
+- **Deployment:** Docker / Vercel
 
-## Getting Started
+## Quick Start
 
 ```bash
-# Install dependencies
+# Run with Docker
+docker compose up -d
+# Open http://localhost:5000
+
+# Or run locally
 pip install -r requirements.txt
-
-# Run locally
 python api/index.py
-
-# Deploy to Vercel
-vercel --prod
 ```
 
 ## API Endpoints
