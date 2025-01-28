@@ -9,7 +9,8 @@
     events: {
       'change .task-toggle': 'toggle',
       'click .task-delete': 'deleteTask',
-      'click .task-title': 'navigate'
+      'click .task-title': 'navigate',
+      'click .task-view': 'navigate'
     },
 
     template: Handlebars.compile($('#tpl-task-item').html()),
@@ -25,6 +26,7 @@
       var data = {
         id: m.id,
         title: m.get('title'),
+        category: m.get('category'),
         done: m.get('status') === 'done',
         priorityClass: priority === 2 ? 'urgent' : priority === 1 ? 'high' : 'normal',
         priorityLabel: priority === 2 ? 'Urgent' : priority === 1 ? 'High' : null

@@ -4,38 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ordo — Task Manager</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="icon" href="/static/favicon.ico">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <Header class="app-header">
     <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#"><i class="fa fa-check-square-o"></i> Ordo</a>
-      </div>
-      <p class="navbar-text navbar-right hidden-xs">Stay organized. Get things done.</p>
+      <a class="app-brand" href="#/"><i class="fa fa-check-square-o"></i> Ordo</a>
+      <p class="app-tagline">Stay organized. Get things done.</p>
     </div>
-  </nav>
+  </Header>
 
-  <div id="app" class="container"></div>
+  <div id="app"></div>
 
   <!-- Handlebars Templates -->
   <script id="tpl-app" type="text/x-handlebars-template">
-    <div id="progress-region"></div>
-    <div id="list-region"></div>
-    <div id="detail-region"></div>
+    <div class="container">
+      <div id="notify-region"></div>
+      <div id="progress-region"></div>
+      <div id="add-region"></div>
+      <div id="list-region"></div>
+      <div id="detail-region"></div>
+    </div>
+  </script>
+
+  <script id="tpl-notify" type="text/x-handlebars-template">
+    <div class="alert alert-{{type}}" role="alert">
+      <i class="fa {{icon}}"></i> {{message}}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
   </script>
 
   <script id="tpl-progress" type="text/x-handlebars-template">
-    <div class="progress-container">
-      <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{percent}}%"></div>
+    <div class="progress-card">
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-fill" style="width: {{percent}}%"></div>
       </div>
-      <div class="stats-text">
+      <div class="progress-stats">
         <strong>{{done}}</strong> of <strong>{{total}}</strong> tasks done
         (<strong>{{pending}}</strong> pending)
       </div>
@@ -49,22 +57,39 @@
     </div>
   </script>
 
+  <script id="tpl-quick-add" type="text/x-handlebars-template">
+    <div class="panel-add">
+      <div class="panel-add-title">
+        <i class="fa fa-plus-circle"></i> Add Task
+      </div>
+      <form id="form-quick-add" class="quick-add-form">
+        <input type="text" id="quick-title" placeholder="What needs to be done?" required autofocus>
+        <button type="submit" class="btn-primary">Add</button>
+      </form>
+    </div>
+  </script>
+
   <script id="tpl-task-item" type="text/x-handlebars-template">
-    <div class="task-item priority-{{priorityClass}} {{#if done}}done{{/if}}" data-id="{{id}}">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" class="task-toggle" {{#if done}}checked{{/if}}>
-          <span class="task-title">{{title}}</span>
+    <div class="task-item priority-{{priorityClass}} {{#if done}}completed{{/if}}" data-id="{{id}}">
+      <div class="task-check">
+        <input type="checkbox" class="task-toggle" {{#if done}}checked{{/if}}>
+      </div>
+      <div class="task-body">
+        <div class="task-title">{{title}}</div>
+        <div class="task-meta">
           {{#if priorityLabel}}
-            <span class="label label-{{priorityClass}} label-priority">{{priorityLabel}}</span>
+            <span class="priority-badge {{priorityClass}}">{{priorityLabel}}</span>
           {{/if}}
-        </label>
+          {{#if category}}
+            <span class="category-tag"><i class="fa fa-tag"></i> {{category}}</span>
+          {{/if}}
+        </div>
       </div>
       <div class="task-actions">
-        <a href="#task/{{id}}" class="btn btn-xs btn-default" title="View details">
+        <button class="btn-icon task-view" title="View details">
           <i class="fa fa-eye"></i>
-        </a>
-        <button class="btn btn-xs btn-danger task-delete" title="Delete">
+        </button>
+        <button class="btn-icon danger task-delete" title="Delete">
           <i class="fa fa-trash-o"></i>
         </button>
       </div>
@@ -72,93 +97,66 @@
   </script>
 
   <script id="tpl-task-list" type="text/x-handlebars-template">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="category-group">
-          <div class="category-header">
-            <h4><i class="fa fa-clock-o"></i> Pending</h4>
-            <span class="badge">{{pendingCount}}</span>
-          </div>
-          <div id="pending-list"></div>
-        </div>
-        <div class="category-group">
-          <div class="category-header">
-            <h4><i class="fa fa-check"></i> Completed</h4>
-            <span class="badge">{{doneCount}}</span>
-          </div>
-          <div id="done-list"></div>
-        </div>
+    <div class="task-section">
+      <div class="task-section-header">
+        <i class="fa fa-clock-o"></i>
+        <h3>Pending</h3>
+        <span class="task-count">{{pendingCount}}</span>
       </div>
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-plus-circle"></i> Quick Add</h3>
-          </div>
-          <div class="panel-body">
-            <form id="form-quick-add">
-              <div class="form-group">
-                <input type="text" class="form-control" id="quick-title" placeholder="Task title..." required>
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">
-                Add Task
-              </button>
-            </form>
-          </div>
-        </div>
+      <div id="pending-list"></div>
+    </div>
+    <div class="task-section">
+      <div class="task-section-header">
+        <i class="fa fa-check"></i>
+        <h3>Completed</h3>
+        <span class="task-count">{{doneCount}}</span>
       </div>
+      <div id="done-list"></div>
     </div>
   </script>
 
   <script id="tpl-task-detail" type="text/x-handlebars-template">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <i class="fa fa-check-square-o"></i> {{title}}
-        </h3>
+    <div class="panel-detail">
+      <div class="panel-detail-header">
+        <i class="fa fa-check-square-o"></i>
+        <h3>{{title}}</h3>
       </div>
-      <div class="panel-body">
-        <form id="form-task-detail">
-          <div class="form-group">
-            <label>Title</label>
-            <input type="text" class="form-control" name="title" value="{{title}}" required>
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" name="description" rows="4">{{description}}</textarea>
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <select class="form-control" name="category">
-              <option value="general" {{#ifEq category "general"}}selected{{/ifEq}}>General</option>
-              <option value="work" {{#ifEq category "work"}}selected{{/ifEq}}>Work</option>
-              <option value="personal" {{#ifEq category "personal"}}selected{{/ifEq}}>Personal</option>
-              <option value="learning" {{#ifEq category "learning"}}selected{{/ifEq}}>Learning</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Priority</label>
-            <select class="form-control" name="priority">
-              <option value="0" {{#ifEq priority 0}}selected{{/ifEq}}>Normal</option>
-              <option value="1" {{#ifEq priority 1}}selected{{/ifEq}}>High</option>
-              <option value="2" {{#ifEq priority 2}}selected{{/ifEq}}>Urgent</option>
-            </select>
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" name="status" value="done" {{#if done}}checked{{/if}}>
-              Mark as completed
-            </label>
-          </div>
-          <hr>
-          <button type="submit" class="btn btn-success">
-            <i class="fa fa-save"></i> Save
-          </button>
-          <a href="#/" class="btn btn-default">Back</a>
-          <button class="btn btn-danger pull-right task-delete">
-            <i class="fa fa-trash-o"></i> Delete
-          </button>
-        </form>
-      </div>
+      <form id="form-task-detail">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" name="title" value="{{title}}" required>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="description" rows="4">{{description}}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category">
+            <option value="general" {{#ifEq category "general"}}selected{{/ifEq}}>General</option>
+            <option value="work" {{#ifEq category "work"}}selected{{/ifEq}}>Work</option>
+            <option value="personal" {{#ifEq category "personal"}}selected{{/ifEq}}>Personal</option>
+            <option value="learning" {{#ifEq category "learning"}}selected{{/ifEq}}>Learning</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select name="priority">
+            <option value="0" {{#ifEq priority 0}}selected{{/ifEq}}>Normal</option>
+            <option value="1" {{#ifEq priority 1}}selected{{/ifEq}}>High</option>
+            <option value="2" {{#ifEq priority 2}}selected{{/ifEq}}>Urgent</option>
+          </select>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" name="status" value="done" id="detail-done" {{#if done}}checked{{/if}}>
+          <label for="detail-done">Mark as completed</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-success"><i class="fa fa-save"></i> Save</button>
+          <a href="#/" class="btn-ghost"><i class="fa fa-arrow-left"></i> Back</a>
+          <button class="btn-danger task-delete"><i class="fa fa-trash-o"></i> Delete</button>
+        </div>
+      </form>
     </div>
   </script>
 
@@ -166,7 +164,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <script>var App={Models:{},Collections:{},Views:{},Router:{}};window.App=App;</script>
 

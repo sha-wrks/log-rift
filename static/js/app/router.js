@@ -8,6 +8,13 @@
     },
 
     list: function () {
+      if (App.detailView) {
+        App.detailView.remove();
+        App.detailView = null;
+      }
+      if (App.listView) {
+        App.listView.render();
+      }
       App.tasks.fetch({ reset: true });
     },
 
@@ -17,7 +24,11 @@
         task = new App.Models.Task({ id: id });
         task.fetch();
       }
-      App.currentTask = task;
+      if (App.detailView) {
+        App.detailView.remove();
+      }
+      App.detailView = new App.Views.TaskDetail({ model: task });
+      App.detailView.render();
     }
   });
 

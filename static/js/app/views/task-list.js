@@ -17,6 +17,7 @@
     render: function () {
       this.$el.html(this.template());
       this.renderProgress();
+      this.renderQuickAdd();
       this.renderList();
       return this;
     },
@@ -24,6 +25,12 @@
     renderProgress: function () {
       var sub = new App.Views.Progress({ collection: this.collection });
       $('#progress-region').html(sub.render().el);
+    },
+
+    renderQuickAdd: function () {
+      var html = Handlebars.compile($('#tpl-quick-add').html())();
+      $('#add-region').html(html);
+      this._bindQuickAdd();
     },
 
     renderList: function () {
@@ -42,7 +49,10 @@
         _.each(pending, function (t) { self._appendItem('#pending-list', t); });
         _.each(done, function (t) { self._appendItem('#done-list', t); });
       }
+    },
 
+    _bindQuickAdd: function () {
+      var self = this;
       $('#form-quick-add').on('submit', function (e) {
         e.preventDefault();
         var title = $('#quick-title').val().trim();
