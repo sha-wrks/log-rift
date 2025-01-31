@@ -4,13 +4,12 @@
 
     tagName: 'div',
 
-    className: 'task-item-container',
+    className: 'task-item-wrapper',
 
     events: {
       'change .task-toggle': 'toggle',
       'click .task-delete': 'deleteTask',
-      'click .task-title': 'navigate',
-      'click .task-view': 'navigate'
+      'click [data-navigate]': 'navigate'
     },
 
     template: Handlebars.compile($('#tpl-task-item').html()),
@@ -23,15 +22,25 @@
     render: function () {
       var m = this.model;
       var priority = m.get('priority');
+      var status = m.get('status');
+      var done = status === 'done';
+      var pClass = priority === 2 ? 'urgent' : priority === 1 ? 'high' : 'normal';
+      var borderClass = '';
+      if (pClass === 'urgent') borderClass = 'border-l-4 border-l-red-500';
+      else if (pClass === 'high') borderClass = 'border-l-4 border-l-amber-400';
       var data = {
         id: m.id,
         title: m.get('title'),
         category: m.get('category'),
-        done: m.get('status') === 'done',
-        priorityClass: priority === 2 ? 'urgent' : priority === 1 ? 'high' : 'normal',
+        done: done,
+        dueDate: m.get('due_date') || '',
+        dueOverdue: false,
+        borderClass: borderClass,
+        priorityClass: pClass,
         priorityLabel: priority === 2 ? 'Urgent' : priority === 1 ? 'High' : null
       };
       this.$el.html(this.template(data));
+      if (done) this.$el.find('.task-item').addClass('opacity-75');
       return this;
     },
 

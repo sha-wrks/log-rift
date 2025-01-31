@@ -15,7 +15,14 @@
       if (App.listView) {
         App.listView.render();
       }
-      App.tasks.fetch({ reset: true });
+      App.tasks.fetch({
+        reset: true,
+        success: function () {
+          if (App.tasks.length > 0 && App.tasks.pending().length === 0) {
+            if (typeof App.confetti === 'function') App.confetti();
+          }
+        }
+      });
     },
 
     detail: function (id) {

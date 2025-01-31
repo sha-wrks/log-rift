@@ -1,9 +1,5 @@
 ;(function () {
 
-  Handlebars.registerHelper('ifEq', function (a, b, opts) {
-    return a === b ? opts.fn(this) : opts.inverse(this);
-  });
-
   App.Views.TaskDetail = Backbone.View.extend({
 
     el: '#app',
