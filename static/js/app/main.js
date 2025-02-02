@@ -15,9 +15,15 @@
     // Theme
     (function () {
       var saved = localStorage.getItem('ordo-theme');
-      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      if (saved === 'dark' || (!saved && prefersDark.matches)) {
         document.documentElement.classList.add('dark');
       }
+      prefersDark.addEventListener('change', function (e) {
+        if (!localStorage.getItem('ordo-theme')) {
+          document.documentElement.classList.toggle('dark', e.matches);
+        }
+      });
       $('#theme-toggle').on('click', function () {
         var isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('ordo-theme', isDark ? 'dark' : 'light');

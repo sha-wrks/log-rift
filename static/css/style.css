@@ -27,7 +27,12 @@
 .dark #cmd-results::-webkit-scrollbar-thumb { background: #475569; }
 
 /* Smooth transitions for theme toggle */
-html { transition: background-color 0.3s ease; }
+html,
+html *,
+html *::before,
+html *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease;
+}
 
 /* Confirm dialog styling */
 .modal-confirm-backdrop {
