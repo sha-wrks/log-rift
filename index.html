@@ -83,6 +83,15 @@
     </div>
   </script>
 
+  <script id="tpl-notify-undo" type="text/x-handlebars-template">
+    <div class="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium shadow-lg backdrop-blur-sm bg-slate-800/90 dark:bg-slate-200/90 text-white dark:text-slate-800 border border-slate-700 dark:border-slate-300" role="alert">
+      <i class="fa-solid fa-trash-can text-xs"></i>
+      <span class="flex-1">{{message}}</span>
+      <button class="notify-undo px-3 py-1 rounded-lg text-xs font-semibold bg-white/20 dark:bg-slate-800/30 hover:bg-white/30 dark:hover:bg-slate-800/50 transition-colors">Undo</button>
+      <button type="button" class="notify-close opacity-60 hover:opacity-100 transition-opacity text-sm leading-none"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </script>
+
   <script id="tpl-progress" type="text/x-handlebars-template">
     <div class="bg-white dark:bg-slate-800/80 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 p-5 shadow-sm">
       <div class="flex items-center justify-between mb-3">

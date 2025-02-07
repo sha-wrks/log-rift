@@ -12,6 +12,24 @@
     App.Views.Notify._show(msg, 'danger', 'fa-exclamation-triangle');
   };
 
+  App.Views.Notify.undo = function (msg, onUndo) {
+    var html = Handlebars.compile($('#tpl-notify-undo').html())({ message: msg });
+    $('#notify-region').html(html);
+    App.Animations.slideIn('#notify-region [role="alert"]', 'down');
+    var undone = false;
+    var $alert = $('#notify-region [role="alert"]');
+    $alert.find('.notify-undo').on('click', function () {
+      undone = true;
+      onUndo();
+      gsap.to($alert[0], { opacity: 0, y: -12, duration: 0.2, onComplete: function () { $alert.remove(); } });
+    });
+    setTimeout(function () {
+      if (!undone) {
+        gsap.to($alert[0], { opacity: 0, y: -12, duration: 0.3, onComplete: function () { $alert.remove(); } });
+      }
+    }, 4000);
+  };
+
   App.Views.Notify._show = function (msg, type, icon) {
     var html = template({ message: msg, type: type, icon: icon });
     $('#notify-region').html(html);

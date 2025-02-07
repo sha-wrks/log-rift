@@ -60,9 +60,12 @@
 
     deleteTask: function (e) {
       e.stopPropagation();
-      if (confirm('Delete this task?')) {
-        this.model.destroy({ wait: true });
-      }
+      var model = this.model;
+      var data = model.toJSON();
+      model.destroy({ wait: true });
+      App.Views.Notify.undo('Task deleted', function () {
+        App.tasks.create(data, { wait: true, at: 0 });
+      });
     },
 
     navigate: function (e) {
