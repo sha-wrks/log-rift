@@ -89,6 +89,11 @@ def delete_task(task_id):
 app = Flask(__name__)
 CORS(app)
 
+@app.after_request
+def add_version_header(response):
+    response.headers["X-API-Version"] = "1.0.0"
+    return response
+
 @app.route('/api/tasks', methods=['GET'])
 def list_tasks():
     tasks = all_tasks()
