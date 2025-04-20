@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    ports: ["5000:5000"]
+    environment: [FLASK_ENV=production]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen(\"http://localhost:5000/api/health\")"]
+      interval: 30s
