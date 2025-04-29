@@ -169,6 +169,10 @@ def not_found(e):
 def server_error(e):
     return jsonify({'error': 'Internal server error'}), 500
 
+@app.route('/api/metrics')
+def metrics():
+    from api.monitoring import avg_response_time
+    return jsonify({'uptime': 0, 'avg_response_time': 0})
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') == 'development'
