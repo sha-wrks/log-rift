@@ -15,3 +15,15 @@ A modern, feature-rich task management application built with Flask and Backbone
 - **Styling**: Tailwind CSS + Font Awesome 6
 - **Animations**: GSAP (GreenSock Animation Platform)
 - **Deployment**: Docker / Vercel / Gunicorn
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/tasks | List all tasks |
+| POST | /api/tasks | Create a task |
+| GET | /api/tasks/:id | Get a task |
+| PUT | /api/tasks/:id | Update a task |
+| PATCH | /api/tasks/:id/toggle | Toggle status |
+| DELETE | /api/tasks/:id | Delete a task |
+| GET | /api/health | Health check |
