@@ -1,1 +1,1 @@
-User-agent: *\nAllow: /
+User-agent: *\nDisallow: /api/
