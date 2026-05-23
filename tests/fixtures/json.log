@@ -1,0 +1,11 @@
+{"timestamp":"2024-01-15T08:00:00Z","level":"INFO","source":"startup","message":"Application starting","version":"1.4.2"}
+{"timestamp":"2024-01-15T08:00:01Z","level":"INFO","source":"config","message":"Configuration loaded","env":"production"}
+{"timestamp":"2024-01-15T08:00:02Z","level":"DEBUG","source":"database","message":"Establishing connection pool","pool_size":10}
+{"timestamp":"2024-01-15T09:15:22Z","level":"INFO","source":"webserver","message":"Request handled","method":"GET","path":"/api/users","status":200,"latency_ms":45}
+{"timestamp":"2024-01-15T09:30:01Z","level":"WARN","source":"database","message":"Slow query detected","query_time_ms":2300,"table":"users"}
+{"timestamp":"2024-01-15T10:00:00Z","level":"ERROR","source":"database","message":"Connection pool exhausted","active":10,"waiting":5}
+{"timestamp":"2024-01-15T10:00:01Z","level":"ERROR","source":"webserver","message":"Request failed","method":"GET","path":"/api/data","status":503}
+{"timestamp":"2024-01-15T10:00:07Z","level":"INFO","source":"database","message":"Connection restored","downtime_ms":7000}
+{"timestamp":"2024-01-15T12:00:00Z","level":"INFO","source":"health","message":"Health check passed","checks":{"db":"ok","cache":"ok"}}
+{"timestamp":"2024-01-15T14:30:20Z","level":"ERROR","source":"memory","message":"Memory critical","usage_pct":95}
+{"timestamp":"2024-01-15T14:30:21Z","level":"FATAL","source":"runtime","message":"Out of memory - process terminating"}

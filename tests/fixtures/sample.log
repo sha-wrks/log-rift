@@ -1,0 +1,18 @@
+2024-01-15T08:00:00Z INFO  [startup] Application starting
+2024-01-15T08:00:01Z INFO  [config] Loaded configuration from /etc/app/config.yaml
+2024-01-15T08:00:02Z DEBUG [database] Connecting to postgres://localhost:5432/app
+2024-01-15T08:00:03Z INFO  [database] Connection pool initialized (size=10)
+2024-01-15T08:00:04Z INFO  [webserver] Listening on 0.0.0.0:8080
+2024-01-15T09:15:22Z INFO  [webserver] GET /api/users 200 45ms
+2024-01-15T09:15:23Z INFO  [webserver] POST /api/login 200 120ms
+2024-01-15T09:30:01Z WARN  [database] Slow query detected (query_time=2300ms)
+2024-01-15T10:00:00Z ERROR [database] Connection pool exhausted (active=10, waiting=5)
+2024-01-15T10:00:01Z ERROR [webserver] GET /api/data 503 timeout
+2024-01-15T10:00:05Z WARN  [database] Retrying connection...
+2024-01-15T10:00:07Z INFO  [database] Connection restored
+2024-01-15T11:00:00Z DEBUG [cache] Cache hit ratio: 0.87
+2024-01-15T12:00:00Z INFO  [health] Health check passed
+2024-01-15T14:30:00Z WARN  [memory] Memory usage at 78%
+2024-01-15T14:30:10Z WARN  [memory] Memory usage at 85%
+2024-01-15T14:30:20Z ERROR [memory] Memory usage at 95%, triggering GC
+2024-01-15T14:30:21Z FATAL [runtime] Out of memory - process terminating
