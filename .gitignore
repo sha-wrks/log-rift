@@ -1,0 +1,36 @@
+# Rust build output
+/target/
+
+# Cargo lock file (keep for binaries, remove this line if publishing as a library)
+# Cargo.lock
+
+# Editor and IDE
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.idea/
+*.iml
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V8
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Logs
+*.log
+!tests/fixtures/*.log
+
+# Benchmark results
+criterion/
