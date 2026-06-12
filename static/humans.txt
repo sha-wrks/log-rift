@@ -1,1 +1,3 @@
-Site: Ordo Task Manager\nBuilt with: Flask + Backbone.js\nDesign: Tailwind CSS + GSAP
+Site: Ordo Task Manager
+Built with: Flask + Backbone.js
+Design: Tailwind CSS + GSAP

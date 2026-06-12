@@ -1,1 +1,4 @@
-Quick Add: n\nSearch: /\nCommand Palette: Cmd+K\nToggle Theme: No shortcut
+Quick Add: n
+Search: /
+Command Palette: Cmd+K
+Toggle Theme: No shortcut

@@ -1,1 +1,3 @@
-TODO: Add comprehensive test coverage\nTODO: Add CI pipeline\nTODO: Add API documentation
+TODO: Add comprehensive test coverage
+TODO: Add CI pipeline
+TODO: Add API documentation
